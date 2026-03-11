@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>{{ title }}</title></head>
+<body>
+    <h1>{{ title }}</h1>
+    <p>{{ welcome_message }}</p>
+
+    <h3>Наші категорії:</h3>
+    <ul>
+        {% for cat in categories %}
+            <li>{{ cat }}</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+    <a href="/about/">Дізнатися більше про нас</a>
+</body>
+</html>

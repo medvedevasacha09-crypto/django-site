@@ -20,3 +20,12 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+from django.contrib import admin
+from django.urls import path
+from shop import views  # Імпортуємо ваші views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home, name='home'),       # Головна сторінка
+    path('about/', views.about, name='about'), # Сторінка "Про нас"
+]
