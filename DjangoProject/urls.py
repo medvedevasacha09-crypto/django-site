@@ -26,6 +26,12 @@ from shop import views  # Імпортуємо ваші views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),       # Головна сторінка
-    path('about/', views.about, name='about'), # Сторінка "Про нас"
+    path('', views.index, name='home'),       # Головна сторінка
+    path('about/', views.about, name='about'),
+    path('parfume/', views.parfume, name='parfume'),
+    path('cosmetics/', views.cosmetics, name='cosmetics'),
+    path('clothing/', views.clothing, name='clothing'),
+    path('footwear/', views.footwear, name='footwear'),
+    path('bag/', views.bag, name='bag')
+    # Сторінка "Про нас"
 ]
