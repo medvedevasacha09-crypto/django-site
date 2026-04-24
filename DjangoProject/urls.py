@@ -22,14 +22,14 @@ from django.contrib import admin
 from django.urls import path
 from shop import views  # Імпортуємо ваші views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='home'),       # Головна сторінка
+    path('', views.index, name='home'),
     path('about/', views.about, name='about'),
     path('parfume/', views.parfume, name='parfume'),
     path('cosmetics/', views.cosmetics, name='cosmetics'),
     path('clothing/', views.clothing, name='clothing'),
     path('footwear/', views.footwear, name='footwear'),
-    path('bag/', views.bag, name='bag')
-    # Сторінка "Про нас"
+    path('bag/', views.bag, name='bag'),
 ]

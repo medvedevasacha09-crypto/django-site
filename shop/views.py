@@ -1,46 +1,32 @@
 from django.shortcuts import render
+from .models import Category, Product  # Прибрали Review, якщо його немає в models.py # Імпортуємо всі ваші моделі
 
-
-def home(request):
-    # Контекст з даними про ваш магазин
-    context = {
-        'title': 'Fluffy prostir',
-        'categories': ['Парфуми',  'Косметика','Одяг', 'Взуття', 'Сумки'],
-    }
-    return render(request, 'shop/index.html', context)
-
+def index(request):
+    # Отримуємо всі товари для головної
+    products = Product.objects.all()
+    return render(request, 'shop/index.html', {'products': products})
 
 def about(request):
-    context = {
-        'title': 'Про наш магазин',
-        'description': 'Ми продаємо лише органічну косметику з 2024 року.'
-    }
-    return render(request, 'shop/about.html', context)
-
-
-from django.shortcuts import render
-
-from django.shortcuts import render
-
-def index(request):
-    categories = ['Парфуми',  'Косметика','Одяг', 'Взуття', 'Сумки']
-
-from django.shortcuts import render
-def index(request):
-    return render(request, 'shop/index.html')
+    return render(request, 'shop/about.html')
 
 def parfume(request):
-    return render(request, 'shop/parfume.html')
+    # Фільтруємо товари, де назва категорії містить "парфум"
+    items = Product.objects.filter(category__name__icontains='парфум')
+    return render(request, 'shop/parfume.html', {'items': items})
 
 def cosmetics(request):
-    return render(request, 'shop/cosmetics.html')
+    # Фільтруємо товари для косметики
+    items = Product.objects.filter(category__name__icontains='косметика')
+    return render(request, 'shop/cosmetics.html', {'items': items})
 
 def clothing(request):
-    return render(request, 'shop/clothing.html')
-
+    items = Product.objects.filter(category__name__icontains='одяг')
+    return render(request, 'shop/clothing.html', {'items': items})
 
 def footwear(request):
-    return render(request, 'shop/footwear.html')
+    items = Product.objects.filter(category__name__icontains='взуття')
+    return render(request, 'shop/footwear.html', {'items': items})
 
 def bag(request):
-    return render(request, 'shop/bag.html')
+    items = Product.objects.filter(category__name__icontains='сумки')
+    return render(request, 'shop/bag.html', {'items': items})
