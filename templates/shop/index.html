@@ -1,34 +1,78 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
-<head><title>{{ title }}</title></head>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <!-- Підключаємо твій новий файл стилів -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
 <body>
-    <h1>{{ title }}</h1>
 
+    <header>
+        <a href="/" class="logo">F</a>
+    <nav>
+    <a href="{% url 'parfume' %}">ПАРФУМИ</a>
+    <a href="{% url 'cosmetics' %}">КОСМЕТИКА</a>
+    <a href="{% url 'clothing' %}">ОДЯГ</a>
+    <a href="{% url 'footwear' %}">ВЗУТТЯ</a>
+    <a href="{% url 'bag' %}">СУМКИ</a>
+</nav>
+        <div class="icons">🛒 ☰</div>
+    </header>
 
-<ul>
-    <li><a href="{% url 'parfume' %}">Парфуми</a></li>
-    <li><a href="{% url 'cosmetics' %}">Косметика</a></li>
-    <li><a href="{% url 'clothing' %}">Одяг</a></li>
-    <li><a href="{% url 'footwear' %}">Взуття</a></li>
-    <li><a href="{% url 'bag' %}">Сумки</a></li>
-</ul>
+    <main>
+        <!-- Банер з акцією -->
+        <section class="banner">
+            <div>
+                <h2>Весняний<br>BVLGARIпад</h2>
+                <button class="btn-more">Більше</button>
+            </div>
+            <!-- Тут буде картинка парфумів -->
+            <div class="banner-placeholder">📦</div>
+        </section>
 
-    <hr>
-    <a href="/about/">Дізнатися більше про нас</a>
-<div class="product-list">
-    {% for product in products %}
-        <div class="product-item">
-            <h3>{{ product.name }}</h3>
-            <p>Ціна: {{ product.price }} грн</p>
-            <p>Опис: {{ product.description|truncatewords:10 }}</p>
-            <small>Додано: {{ product.created_at|date:"d.m.Y" }}</small>
-        </div>
-    {% empty %}
-        <p>Наразі товарів немає. Додайте їх через адмін-панель.</p>
-    {% endfor %}
-</div>
-{% for product in products %}
-    <p>{{ product.name }}</p>
-{% endfor %}
+        <!-- Категорії з картинками -->
+        <section class="interesting">
+            <h3>Також вас може цікавити:</h3>
+            <div class="category-grid">
+                {% for cat in categories %}
+                <div class="cat-card">
+                    {% if cat.image %}
+                        <img src="{{ cat.image.url }}" alt="{{ cat.name }}">
+                    {% endif %}
+                    <span>{{ cat.name }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Блок з хітами продажів (фіолетовий) -->
+        <section class="hits">
+            <h3>ХІТИ ПРОДАЖІВ</h3>
+            <div class="hits-grid">
+                {% for product in hits %}
+                <div class="hit-card">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% endif %}
+                    <h4>{{ product.name }}</h4>
+                    <p>{{ product.price }} грн</p>
+                    <small>Оновлено: {{ product.updated_at|date:"d.m.Y" }}</small>
+                </div>
+                {% empty %}
+                    <p>Поки немає акційних товарів.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p><strong>Fluffy</strong></p>
+        <p>Магазин косметики, парфумів та одягу з Європи</p>
+        <p>Контакти: @fluffy_prst | <a href="{% url 'about' %}">Про нас</a></p>
+        <p>© 2026 Fluffy. Всі права захищені.</p>
+    </footer>
+
 </body>
 </html>
