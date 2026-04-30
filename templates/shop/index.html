@@ -4,61 +4,71 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
-    <!-- Підключаємо твій новий файл стилів -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 
     <header>
-        <a href="/" class="logo">F</a>
-    <nav>
-    <a href="{% url 'parfume' %}">ПАРФУМИ</a>
-    <a href="{% url 'cosmetics' %}">КОСМЕТИКА</a>
-    <a href="{% url 'clothing' %}">ОДЯГ</a>
-    <a href="{% url 'footwear' %}">ВЗУТТЯ</a>
-    <a href="{% url 'bag' %}">СУМКИ</a>
-</nav>
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="Fluffy Logo" class="logo-img">
+        </a>
+        <nav>
+            <a href="{% url 'parfume' %}">ПАРФУМИ</a>
+            <a href="{% url 'cosmetics' %}">КОСМЕТИКА</a>
+            <a href="{% url 'clothing' %}">ОДЯГ</a>
+            <a href="{% url 'footwear' %}">ВЗУТТЯ</a>
+            <a href="{% url 'bag' %}">СУМКИ</a>
+        </nav>
         <div class="icons">🛒 ☰</div>
     </header>
 
     <main>
-        <!-- Банер з акцією -->
         <section class="banner">
             <div>
                 <h2>Весняний<br>BVLGARIпад</h2>
                 <button class="btn-more">Більше</button>
             </div>
-            <!-- Тут буде картинка парфумів -->
-            <div class="banner-placeholder">📦</div>
+            <div class="banner-img">
+                <img src="{% static 'img/banner.png' %}" alt="Bvlgari">
+            </div>
         </section>
 
-        <!-- Категорії з картинками -->
         <section class="interesting">
             <h3>Також вас може цікавити:</h3>
             <div class="category-grid">
                 {% for cat in categories %}
                 <div class="cat-card">
-                    {% if cat.image %}
-                        <img src="{{ cat.image.url }}" alt="{{ cat.name }}">
-                    {% endif %}
+                    <div class="cat-image-wrapper">
+                        {% if cat.image %}
+                            <img src="{{ cat.image.url }}" alt="{{ cat.name }}">
+                        {% else %}
+                            <div class="placeholder">Немає фото</div>
+                        {% endif %}
+                    </div>
                     <span>{{ cat.name }}</span>
                 </div>
                 {% endfor %}
             </div>
         </section>
 
-        <!-- Блок з хітами продажів (фіолетовий) -->
         <section class="hits">
             <h3>ХІТИ ПРОДАЖІВ</h3>
             <div class="hits-grid">
                 {% for product in hits %}
                 <div class="hit-card">
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                    {% endif %}
-                    <h4>{{ product.name }}</h4>
-                    <p>{{ product.price }} грн</p>
-                    <small>Оновлено: {{ product.updated_at|date:"d.m.Y" }}</small>
+                    <div class="hit-image-wrapper">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'img/Jean Paul Gaultier SCANDAL LE PARFUM.jpeg' %}" alt="Default">
+                        {% endif %}
+                    </div>
+                    <!-- Додано контейнер для контенту, щоб нічого не з'їжджало -->
+                    <div class="hit-content">
+                        <h4>{{ product.name }}</h4>
+                        <p>{{ product.price }} грн</p>
+                        <button class="buy-button">Купити</button>
+                    </div>
                 </div>
                 {% empty %}
                     <p>Поки немає акційних товарів.</p>

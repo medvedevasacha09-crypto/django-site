@@ -11,26 +11,55 @@ body { font-family: 'Arial', sans-serif;
     color: var(--text-dark); }
 
 
+/* Стилі для шапки (Header) */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 5%;
+    padding: 15px 5%;
     background: #fff;
     border-bottom: 1px solid #eee;
 }
-.logo { font-size: 24px;
-    font-weight: bold;
-    color: #1a1a1a;
+
+/* Контейнер посилання навколо лого */
+.logo {
+    display: flex;
+    align-items: center;
     text-decoration: none;
 }
+
+/* Стилі безпосередньо для картинки логотипу */
+.logo img {
+    height: 60px;       /* Встанови висоту, яка тобі подобається */
+    width: auto;        /* Ширина підлаштується автоматично */
+    display: block;
+    transition: transform 0.3s ease; /* Плавний ефект при наведенні */
+}
+
+/* Ефект при наведенні на лого */
+.logo img:hover {
+    transform: scale(1.05); /* Логотип трішки збільшиться */
+}
+
+/* Навігація, щоб вона була по центру відносно лого */
+nav {
+    display: flex;
+    align-items: center;
+    gap: 25px; /* Відстань між пунктами меню */
+}
+
 nav a {
-    margin: 0 15px;
     text-decoration: none;
     color: #666;
     font-size: 14px;
-    text-transform: uppercase; }
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
 
+nav a:hover {
+    color: var(--brand-purple); /* Колір змінюється на фіолетовий при наведенні */
+}
 /* Banner */
 .banner {
     background-color: var(--brand-purple);
@@ -60,47 +89,103 @@ nav a {
 }
 .category-grid {
     display: flex;
-    gap: 20px;
+    gap: 40px; /* ЗБІЛЬШЕНО ВІДСТАНЬ між категоріями */
     overflow-x: auto;
-    padding-bottom: 20px; }
+    padding: 20px 0;
+}
 .cat-card {
     background: #ddd;
-    min-width: 200px;
-    height: 300px;
-    border-radius: 10px;
+    min-width: 280px; /* ЗБІЛЬШЕНО ШИРИНУ (було 200) */
+    height: 380px;    /* ЗБІЛЬШЕНО ВИСОТУ (було 300) */
+    border-radius: 15px;
     position: relative;
     overflow: hidden;
+    transition: transform 0.3s; /* Додав плавний ефект при наведенні */
 }
+
+.cat-card:hover {
+    transform: scale(1.02);
+}
+
 .cat-card span {
     position: absolute;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    background: rgba(255,255,255,0.7);
-    padding: 5px;
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+    background: rgba(255,255,255,0.85);
+    padding: 10px;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 10px;
+    font-weight: bold;
 }
 
 /* Hits Section */
 .hits { background: var(--brand-purple);
     color: white;
-    padding: 50px 5%;
+    padding: 60px 5%;
     text-align: center; }
+
 .hits-grid {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin-top: 30px; }
+    gap: 50px; /* ЗБІЛЬШЕНО ВІДСТАНЬ між хітами */
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
 .hit-card {
     background: white;
     color: black;
-    padding: 20px;
-    border-radius: 5px;
-    width: 250px; }
-.hit-card img {
+    padding: 0;
+    border-radius: 20px;
+    width: 320px; /* ЗБІЛЬШЕНО ШИРИНУ (було 250) */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* Оновлені стилі для фото в хітах */
+.hit-image-wrapper {
     width: 100%;
-    height: auto; }
+    height: 320px; /* ЗБІЛЬШЕНО ВИСОТУ ФОТО */
+    background: #fff;
+}
+
+.hit-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    padding: 10px; /* Трохи відступу, щоб флакони не торкалися країв */
+}
+
+/* Новий блок для тексту під фото */
+.hit-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.hit-content h4 {
+    margin: 5px 0;
+    font-size: 18px;
+}
+
+.buy-button {
+    background: var(--brand-purple);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.buy-button:hover {
+    background: #5a44d6;
+}
 
 /* Footer */
 footer {
@@ -108,3 +193,215 @@ footer {
     padding: 40px 5%;
     text-align: center;
     line-height: 1.6; }
+
+.cat-image-wrapper{
+    height: 300px; /* Збільшено контейнер картинки */
+}
+
+/* Стилі для самих картинок у категоріях */
+.cat-card img {
+    width: 100%;
+    height: 300px; /* Збільшено висоту картинки */
+
+    object-fit: contain;
+    object-position: center;
+
+    border-radius: 15px 15px 0 0;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* Налаштування сітки каталогу */
+.catalog-section {
+    padding: 60px 5%;
+    text-align: center;
+}
+
+.catalog-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px; /* Великий відступ між товарами */
+    margin-top: 40px;
+}
+
+/* Картка товару */
+.hit-card {
+    background: white;
+    border-radius: 20px;
+    width: 320px; /* Збільшена ширина */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.hit-image-wrapper {
+    width: 100%;
+    height: 320px; /* Квадратне фото */
+    background: #fff;
+}
+
+.hit-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 15px;
+}
+
+/* Логотип */
+.logo-img {
+    height: 60px;
+    width: auto;
+}
+
+/* Активне посилання в меню */
+nav a.active {
+    color: var(--brand-purple);
+    font-weight: bold;
+}
+/* Контейнер всієї сторінки */
+.product-page-main {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Хлібні крихти */
+.breadcrumb {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 30px;
+}
+.breadcrumb a { text-decoration: none; color: #888; }
+.breadcrumb .current { color: #333; font-weight: 500; }
+
+/* Основна картка */
+.product-card-detail {
+    display: flex;
+    gap: 60px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+/* Галерея */
+.product-gallery {
+    flex: 1;
+    max-width: 500px;
+}
+.main-image-container {
+    border: 1px solid #f0f0f0;
+    border-radius: 15px;
+    overflow: hidden;
+    background: #fff;
+}
+.main-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s;
+}
+.main-image-container img:hover {
+    transform: scale(1.02);
+}
+
+/* Інфо-блок */
+.product-details-info {
+    flex: 1;
+}
+.product-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #1a1a1a;
+}
+.product-sku {
+    color: #aaa;
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+
+/* Ціна */
+.price-section {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.current-price {
+    font-size: 36px;
+    font-weight: 800;
+    color: #8E44AD; /* Твій фіолетовий бренд */
+}
+.stock-status {
+    color: #27ae60;
+    font-weight: 600;
+    font-size: 14px;
+    background: #e8f6ed;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+/* Кнопки */
+.actions {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+.add-to-cart-btn {
+    flex: 1;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    padding: 18px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.add-to-cart-btn:hover { background: #333; }
+
+.wishlist-btn {
+    width: 56px;
+    border: 1px solid #ddd;
+    background: none;
+    border-radius: 12px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Опис */
+.product-description-block h3 {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+.text-content {
+    line-height: 1.7;
+    color: #444;
+}
+
+/* Доставка */
+.delivery-info {
+    margin-top: 40px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+}
+.info-item {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* Адаптація для мобілок */
+@media (max-width: 850px) {
+    .product-card-detail {
+        flex-direction: column;
+    }
+    .product-gallery {
+        max-width: 100%;
+    }
+}

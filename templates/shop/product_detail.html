@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }} | Fluffy</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <header>
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="Fluffy Logo" class="logo-img">
+        </a>
+        <nav>
+            <a href="{% url 'parfume' %}">ПАРФУМИ</a>
+            <a href="{% url 'cosmetics' %}">КОСМЕТИКА</a>
+            <a href="{% url 'clothing' %}">ОДЯГ</a>
+            <a href="{% url 'footwear' %}">ВЗУТТЯ</a>
+            <a href="{% url 'bag' %}">СУМКИ</a>
+        </nav>
+        <div class="icons">🛒 ☰</div>
+    </header>
+
+    <main class="product-page-main">
+        <!-- Хлібні крихти для зручності -->
+        <div class="breadcrumb">
+            <a href="{% url 'home' %}">Головна</a> /
+            <span>{{ product.category.name }}</span> /
+            <span class="current">{{ product.name }}</span>
+        </div>
+
+        <div class="product-card-detail">
+            <!-- Ліва частина: Фото -->
+            <div class="product-gallery">
+                <div class="main-image-container">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" id="main-img">
+                    {% else %}
+                        <img src="{% static 'img/inito.jpeg' %}" alt="Немає фото">
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Права частина: Інформація -->
+            <div class="product-details-info">
+                <h1 class="product-title">{{ product.name }}</h1>
+                <p class="product-sku">Артикул: 000{{ product.id }}</p>
+
+                <div class="price-section">
+                    <span class="current-price">{{ product.price }} грн</span>
+                    <span class="stock-status">В наявності</span>
+                </div>
+
+                <div class="actions">
+                    <button class="add-to-cart-btn">ДОДАТИ В КОШИК</button>
+                    <button class="wishlist-btn">♡</button>
+                </div>
+
+                <div class="product-description-block">
+                    <h3>Опис товару</h3>
+                    <div class="text-content">
+                        {{ product.description|linebreaks }}
+                    </div>
+                </div>
+
+                <div class="delivery-info">
+                    <div class="info-item">🚚 <strong>Доставка:</strong> Нова Пошта, Укрпошта</div>
+                    <div class="info-item">💳 <strong>Оплата:</strong> Карткою на сайті або при отриманні</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Fluffy. Всі права захищені.</p>
+    </footer>
+
+</body>
+</html>

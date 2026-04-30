@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }} | Fluffy</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <header>
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="Fluffy Logo" class="logo-img">
+        </a>
+        <nav>
+            <a href="{% url 'parfume' %}">ПАРФУМИ</a>
+            <a href="{% url 'cosmetics' %}">КОСМЕТИКА</a>
+            <a href="{% url 'clothing' %}">ОДЯГ</a>
+            <a href="{% url 'footwear' %}">ВЗУТТЯ</a>
+            <a href="{% url 'bag' %}">СУМКИ</a>
+        </nav>
+        <div class="icons">🛒 ☰</div>
+    </header>
+
+    <main class="product-detail-page">
+        <div class="product-main-container">
+            <!-- Ліва частина: Велике фото -->
+            <div class="product-image-section">
+                <div class="image-wrapper">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'img/inito.jpeg' %}" alt="Немає фото">
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Права частина: Головна інфо -->
+            <div class="product-info-section">
+                <p class="category-label">{{ product.category.name }}</p>
+                <h1 class="product-title">{{ product.name }}</h1>
+
+                <div class="price-container">
+                    <span class="price-value">{{ product.price }} грн</span>
+                    <span class="stock-badge">В наявності</span>
+                </div>
+
+                <div class="short-features">
+                    <p><strong>Артикул:</strong> #00{{ product.id }}</p>
+                    <p><strong>Бренд:</strong> Fluffy Select</p>
+                </div>
+
+                <button class="add-to-cart-big">ДОДАТИ В КОШИК</button>
+
+                <div class="trust-icons">
+                    <div class="icon-item">🛡️ <span>Гарантія якості</span></div>
+                    <div class="icon-item">🔄 <span>Обмін та повернення</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Нижня частина: Детальний опис -->
+        <section class="product-tabs">
+            <div class="tab-header">
+                <h2 class="active">Опис</h2>
+            </div>
+            <div class="tab-content">
+                {{ product.description|linebreaks }}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p><strong>Fluffy</strong></p>
+        <p>Магазин косметики, парфумів та одягу з Європи</p>
+        <p>© 2026 Fluffy. Всі права захищені.</p>
+    </footer>
+
+</body>
+</html>

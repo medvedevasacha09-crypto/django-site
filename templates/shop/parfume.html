@@ -1,19 +1,61 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
-<head><title>{{ title }}</title></head>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Парфуми | Fluffy</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
 <body>
-    <h1>{{ title }}</h1>
 
+    <header>
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="Fluffy Logo" class="logo-img">
+        </a>
+        <nav>
+            <a href="{% url 'parfume' %}" class="active">ПАРФУМИ</a>
+            <a href="{% url 'cosmetics' %}">КОСМЕТИКА</a>
+            <a href="{% url 'clothing' %}">ОДЯГ</a>
+            <a href="{% url 'footwear' %}">ВЗУТТЯ</a>
+            <a href="{% url 'bag' %}">СУМКИ</a>
+        </nav>
+        <div class="icons">🛒 ☰</div>
+    </header>
 
-<ul>
-    <li><a href="{% url 'home' %}">Головна</a></li>
-    <li><a href="{% url 'cosmetics' %}">Косметика</a></li>
-    <li><a href="{% url 'clothing' %}">Одяг</a></li>
-    <li><a href="{% url 'footwear' %}">Взуття</a></li>
-    <li><a href="{% url 'bag' %}">Сумки</a></li>
-</ul>
+    <main>
+        <section class="catalog-section">
+            <h1>Колекція Парфумів</h1>
+            <div class="catalog-grid">
+                {% for product in items %}
+                <div class="hit-card">
+                    <!-- Додано посилання на детальну сторінку -->
+                    <a href="{% url 'product_detail' product.pk %}" style="text-decoration: none; color: inherit;">
+                        <div class="hit-image-wrapper">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                            {% else %}
+                                <div class="placeholder">Немає фото</div>
+                            {% endif %}
+                        </div>
+                        <div class="hit-content">
+                            <h4>{{ product.name }}</h4>
+                            <p>{{ product.price }} грн</p>
+                            <button class="buy-button">Купити</button>
+                        </div>
+                    </a>
+                </div>
+                {% empty %}
+                    <p>Товарів у цій категорії поки немає.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
 
-    <hr>
-    <a href="/about/">Дізнатися більше про нас</a>
+    <footer>
+        <p><strong>Fluffy</strong></p>
+        <p>Магазин косметики, парфумів та одягу з Європи</p>
+        <p>© 2026 Fluffy. Всі права захищені.</p>
+    </footer>
+
 </body>
 </html>
