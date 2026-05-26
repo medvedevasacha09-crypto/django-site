@@ -1,0 +1,28 @@
+{% extends 'shop/base.html' %}
+{% block title %}Доставка та оплата | Fluffy{% endblock %}
+
+{% block content %}
+<div class="about-page">
+    <h2 id="delivery" class="delivery-title">Оплата і доставка</h2>
+    <div class="delivery-cards">
+        <div class="delivery-card">
+            <div class="icon">🚀</div>
+            <h3>Нова Пошта</h3>
+            <p>Доставка по всій Україні. Відправка 1-2 робочих дні. Безкоштовна від 2000 грн.</p>
+        </div>
+        <div class="delivery-card">
+            <div class="icon">📮</div>
+            <h3>Укрпошта</h3>
+            <p>Доставка до поштового відділення. Відправка щодня. Економний варіант.</p>
+        </div>
+        <div class="delivery-card">
+            <div class="icon">💳</div>
+            <h3>Оплата</h3>
+            <p>Карткою онлайн, при отриманні або переказом на карту.</p>
+        </div>
+    </div>
+    <div class="about-back">
+        <a href="{% url 'home' %}" class="btn-primary">← На головну</a>
+    </div>
+</div>
+{% endblock %}

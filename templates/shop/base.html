@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Fluffy{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<header class="header">
+    <a href="{% url 'home' %}" class="logo">
+        <img src="{% static 'img/logo.png' %}" alt="Fluffy" class="logo-img">
+    </a>
+
+    <nav class="nav">
+        <a href="{% url 'about' %}" class="nav-link">ПРО НАС</a>
+        <a href="{% url 'delivery' %}" class="nav-link">ОПЛАТА І ДОСТАВКА</a>
+    </nav>
+
+    <div class="header-icons">
+        <a href="{% url 'cart' %}" class="cart-icon" title="Кошик">
+            <img src="{% static 'img/cart.png' %}" alt="Кошик" class="cart-img">
+            {% with request.session.cart as cart %}
+                {% if cart %}
+                    <span class="cart-count">{{ cart|length }}</span>
+                {% endif %}
+            {% endwith %}
+        </a>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}" class="icon-btn">👤 {{ user.username }}</a>
+            <a href="{% url 'logout' %}" class="icon-btn auth-btn">Вийти</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="icon-btn auth-btn">Увійти</a>
+        {% endif %}
+    </div>
+</header>
+
+{% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+        <div class="message message-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<main class="main-content">
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+    <div class="footer-inner">
+        <p class="footer-brand">Fluffy</p>
+        <p class="footer-sub">Магазин косметики, парфумів та одягу з Європи</p>
+        <p class="footer-title">Контакти</p>
+        <div class="footer-contacts">
+            <a href="https://t.me/fluffy_prst" target="_blank">✈ fluffy_prst</a>
+            <a href="https://instagram.com/fluffy.prostir" target="_blank">📷 fluffy.prostir</a>
+        </div>
+        <p class="footer-copy">© 2026 Fluffy. Всі права захищені.</p>
+    </div>
+</footer>
+
+<script src="{% static 'js/index.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

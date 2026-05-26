@@ -1,0 +1,60 @@
+{% extends 'shop/base.html' %}
+{% block title %}Профіль | Fluffy{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <h1>👤 {{ user.get_full_name|default:user.username }}</h1>
+    <p class="profile-email">{{ user.email }}</p>
+
+    <div class="profile-links">
+        <a href="{% url 'change_password' %}" class="btn-outline">🔒 Змінити пароль</a>
+        <a href="{% url 'logout' %}" class="btn-outline btn-danger">🚪 Вийти</a>
+    </div>
+
+    <h2 class="orders-title">
+        {% if user.is_staff %}Всі замовлення{% else %}Мої замовлення{% endif %}
+    </h2>
+
+    {% if orders %}
+    <table class="orders-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Дата</th>
+                <th>ПІБ</th>
+                <th>Доставка</th>
+                <th>Сума</th>
+                <th>Статус</th>
+                <th>Товари</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>#{{ order.pk }}</td>
+                <td>{{ order.created_at|date:"d.m.Y H:i" }}</td>
+                <td>{{ order.full_name }}</td>
+                <td>{{ order.get_delivery_type_display }}</td>
+                <td>{{ order.total_price }} грн</td>
+                <td>
+                    <span class="badge badge-{{ order.status }}">
+                        {{ order.get_status_display }}
+                    </span>
+                </td>
+                <td>
+                    {% for item in order.items.all %}
+                    <div class="order-item-line">{{ item.product.name }} × {{ item.quantity }}</div>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="cart-empty">
+        <p>Замовлень поки немає</p>
+        <a href="{% url 'home' %}" class="btn-primary">Перейти до покупок</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

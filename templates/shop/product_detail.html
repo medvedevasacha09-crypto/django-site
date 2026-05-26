@@ -1,96 +1,114 @@
+{% extends 'shop/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ product.name }} | Fluffy</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
 
-    <header>
-        <a href="{% url 'home' %}" class="logo">
-            <img src="{% static 'img/logo.png' %}" alt="Fluffy Logo" class="logo-img">
-        </a>
-        <nav>
-            <a href="{% url 'parfume' %}">ПАРФУМИ</a>
-            <a href="{% url 'cosmetics' %}">КОСМЕТИКА</a>
-            <a href="{% url 'clothing' %}">ОДЯГ</a>
-            <a href="{% url 'footwear' %}">ВЗУТТЯ</a>
-            <a href="{% url 'bag' %}">СУМКИ</a>
-        </nav>
-        <div class="icons">🛒 ☰</div>
-    </header>
+{% block title %}{{ product.name }} | Fluffy{% endblock %}
 
-    <main class="product-page-main">
-        <!-- Хлібні крихти для зручності -->
-        <div class="breadcrumb">
-            <a href="{% url 'home' %}">Головна</a> /
-            <span>{{ product.category.name }}</span> /
-            <span class="current">{{ product.name }}</span>
+{% block content %}
+<div class="product-page-main">
+
+    <div class="breadcrumb">
+        <a href="{% url 'home' %}">Головна</a>
+        <span class="sep">/</span>
+        <a href="{% url 'category_detail' product.category.pk %}">{{ product.category.name }}</a>
+        <span class="sep">/</span>
+        <span class="current">{{ product.name }}</span>
+    </div>
+
+    <div class="product-card-detail">
+
+        <div class="product-gallery">
+            <div class="main-image-container">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <div class="placeholder">📦</div>
+                {% endif %}
+            </div>
         </div>
 
-        <div class="product-card-detail">
-            <!-- Ліва частина: Фото -->
-            <div class="product-gallery">
-                <div class="main-image-container">
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" id="main-img">
-                    {% else %}
-                        <img src="{% static 'img/inito.jpeg' %}" alt="Немає фото">
-                    {% endif %}
-                </div>
-            </div>
+        <div class="product-details-info">
+            {% if product.brand %}
+                <p class="product-brand">{{ product.brand.name }}</p>
+            {% endif %}
+            <h1 class="product-title">{{ product.name }}</h1>
+            <p class="product-sku">Артикул: #{{ product.id }}</p>
 
-            <!-- Права частина: Інформація -->
-            <div class="product-details-info">
-                <h1 class="product-title">{{ product.name }}</h1>
-                <p class="product-sku">Артикул: 000{{ product.id }}</p>
-
-                <div class="price-section">
+            <div class="price-section">
+                {% if product.sale %}
+                    <span class="current-price" style="color:#ff4d4d;">{{ product.sale.sale_price }} грн</span>
+                    <span class="old-price-inline">{{ product.price }} грн</span>
+                    <span class="sale-badge">-{{ product.sale.discount_percent }}%</span>
+                {% else %}
                     <span class="current-price">{{ product.price }} грн</span>
-                    <span class="stock-status">В наявності</span>
-                </div>
+                {% endif %}
+                {% if product.in_stock %}
+                    <span class="stock-status">✓ В наявності</span>
+                {% else %}
+                    <span class="out-of-stock">✗ Немає в наявності</span>
+                {% endif %}
+            </div>
 
-                <div class="actions">
-                    <button class="add-to-cart-btn">ДОДАТИ В КОШИК</button>
-                    <button class="wishlist-btn">♡</button>
-                </div>
+            {% if product.in_stock %}
+            <form method="post" action="{% url 'add_to_cart' product.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="add-to-cart-btn">🛒 Додати в кошик</button>
+            </form>
+            {% else %}
+            <button class="add-to-cart-btn" disabled>Немає в наявності</button>
+            {% endif %}
 
-                <div class="product-description-block">
-                    <h3>Опис товару</h3>
-                    <h4>
-"Енергія тигра. Сяйво каменю. Сила чоловічого духу."
-
-Bvlgari Le Gemme Tygar — це не просто аромат. Це історія сили, концентрація впевненості, витончене уособлення чоловічої природи через ароматичний камінь. Натхненний тигровим оком — напівдорогоцінним каменем, що з давніх часів вважається талісманом мужності, Tygar передає первісну енергію сонця, стабільність землі й рух природи.
-
-Ви вдихаєте перші ноти — і ніби стоїте на краю скелі над морем Індії, де сонце розпечує шкіру, а вітер приносить гіркувато-свіжі акорди грейпфрута. Цей вибух цитрусової свіжості — несподіваний і яскравий, як перший крок до нового життя.
-
-Поступово з'являються глибші ноти — пряний імбир, м'яка амбретта, що додають аромату тепла, глибини і ледь вловимої мінеральності. І, нарешті, Tygar розкривається в своїй силі: амброксан, мускус, пачулі та ветивер формують стійкий, збалансований шлейф, який не просто залишається — він запам’ятовується.
-
-Цей аромат створено для харизматичних, рішучих і впевнених чоловіків. Його не носять випадково — ним підкреслюють статус, силу духу, відданість власним принципам. Він не прагне сподобатись усім, але точно привертає увагу.
-
-Ноти ромату:
-
-Верхні ноти: грейпфрут
-Ноти серця: імбир, амбретта
-Базові ноти: амброксан, мускус, ветивер, пачулі</h4>
-                    <div class="text-content">
-                        {{ product.description|linebreaks }}
-                    </div>
-                </div>
-
-                <div class="delivery-info">
-                    <div class="info-item">🚚 <strong>Доставка:</strong> Нова Пошта, Укрпошта</div>
-                    <div class="info-item">💳 <strong>Оплата:</strong> Карткою на сайті або при отриманні</div>
-                </div>
+            <div class="delivery-info">
+                <div class="info-item">🚚 <strong>Доставка:</strong> Нова Пошта, Укрпошта</div>
+                <div class="info-item">💳 <strong>Оплата:</strong> Карткою або при отриманні</div>
+                <div class="info-item">↩️ <strong>Повернення:</strong> Протягом 14 днів</div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <footer>
-        <p>© 2026 Fluffy. Всі права захищені.</p>
-    </footer>
+    <div class="description-section">
+        <h3>Про цей товар</h3>
+        <div class="text-content">
+            {% if product.description %}
+                {{ product.description|linebreaks }}
+            {% else %}
+                <p>Опис товару відсутній.</p>
+            {% endif %}
+        </div>
+    </div>
 
-</body>
-</html>
+    <div class="rating-section">
+        <h3>Оцінки покупців</h3>
+        {% if avg_rating %}
+        <div class="avg-rating">
+            <span class="avg-score">{{ avg_rating }}</span>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+        </div>
+        {% else %}
+            <p class="no-rating">Ще немає оцінок. Будьте першим!</p>
+        {% endif %}
+
+        {% if user.is_authenticated and not user_rated %}
+        <form method="post" class="rating-form">
+            {% csrf_token %}
+            <p class="rating-label">Ваша оцінка:</p>
+            <div class="rating-choices">
+                {% for value, label in rating_form.score.field.choices %}
+                <label>
+                    <input type="radio" name="score" value="{{ value }}" required>
+                    {{ label }}
+                </label>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn-primary">Оцінити</button>
+        </form>
+        {% elif user_rated %}
+            <p class="rated-msg">✓ Ви вже оцінили цей товар</p>
+        {% else %}
+            <p class="login-to-rate">
+                <a href="{% url 'login' %}">Увійдіть</a>, щоб залишити оцінку
+            </p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

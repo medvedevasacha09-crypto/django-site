@@ -1,20 +1,82 @@
-<!DOCTYPE html>
-<html>
-<head><title>{{ title }}</title></head>
-<body>
-    <h1>{{ title }}</h1>
+{% extends 'shop/base.html' %}
+{% load static %}
 
+{% block title %}Кошик | Fluffy{% endblock %}
 
-<ul>
-    <li><a href="{% url 'home' %}">Головна</a></li>
-    <li><a href="{% url 'parfume' %}">Парфуми</a></li>
-    <li><a href="{% url 'cosmetics' %}">Косметика</a></li>
-    <li><a href="{% url 'clothing' %}">Одяг</a></li>
-    <li><a href="{% url 'footwear' %}">Взуття</a></li>
+{% block content %}
+<div class="cart-page">
+    <h1>🛒 Кошик</h1>
 
-</ul>
+    {% if cart_items %}
+    <div class="cart-layout">
 
-    <hr>
-    <a href="/about/">Дізнатися більше про нас</a>
-</body>
-</html>
+        <div class="cart-items">
+            {% for item in cart_items %}
+            <div class="cart-item">
+                {% if item.product.image %}
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                {% else %}
+                    <div class="cart-item-no-img">📦</div>
+                {% endif %}
+
+                <div class="cart-item-info">
+                    <h4>{{ item.product.name }}</h4>
+                    <p>{{ item.product.price }} грн / шт</p>
+                </div>
+
+                <div class="cart-item-controls">
+                    <form method="post" action="{% url 'update_cart' item.product.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" name="qty" value="{{ item.qty|add:'-1' }}" class="btn-qty">−</button>
+                        <input type="number" name="qty" value="{{ item.qty }}" min="1" class="qty-input"
+                               onchange="this.form.submit()">
+                        <button type="submit" name="qty" value="{{ item.qty|add:'1' }}" class="btn-qty">+</button>
+                    </form>
+                </div>
+
+                <span class="cart-item-total">{{ item.total }} грн</span>
+
+                <form method="post" action="{% url 'remove_from_cart' item.product.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-remove" title="Видалити">✕</button>
+                </form>
+            </div>
+            {% endfor %}
+
+            <div class="cart-total-row">
+                <span>Разом:</span>
+                <span class="cart-total-sum">{{ total }} грн</span>
+            </div>
+        </div>
+
+        <div class="order-sidebar">
+            <div class="order-form-box">
+                <h2>Оформлення замовлення</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in order_form %}
+                    <div class="form-group">
+                        <label>{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for e in field.errors %}<li>{{ e }}</li>{% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn-primary form-submit">✓ Купити зараз</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    {% else %}
+    <div class="cart-empty">
+        <p>😢 Ви ще нічого не додали в кошик</p>
+        <a href="{% url 'home' %}" class="btn-primary">Перейти до покупок</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

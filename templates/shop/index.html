@@ -1,88 +1,101 @@
+{% extends 'shop/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
 
-    <header>
-        <a href="{% url 'home' %}" class="logo">
-            <img src="{% static 'img/logo.png' %}" alt="Fluffy Logo" class="logo-img">
-        </a>
-        <nav>
-            <a href="{% url 'parfume' %}">ПАРФУМИ</a>
-            <a href="{% url 'cosmetics' %}">КОСМЕТИКА</a>
-            <a href="{% url 'clothing' %}">ОДЯГ</a>
-            <a href="{% url 'footwear' %}">ВЗУТТЯ</a>
-            <a href="{% url 'bag' %}">СУМКИ</a>
-        </nav>
-        <div class="icons">🛒 ☰</div>
-    </header>
+{% block title %}Fluffy — Головна{% endblock %}
 
-    <main>
-        <section class="banner">
-            <div>
-                <h2>Весняний<br>BVLGARIпад</h2>
-                <button class="btn-more">Більше</button>
-            </div>
-            <div class="banner-img">
-                <img src="{% static 'img/banner.png' %}" alt="Bvlgari">
-            </div>
-        </section>
+{% block content %}
 
-        <section class="interesting">
-            <h3>Також вас може цікавити:</h3>
-            <div class="category-grid">
-                {% for cat in categories %}
-                <div class="cat-card">
-                    <div class="cat-image-wrapper">
-                        {% if cat.image %}
-                            <img src="{{ cat.image.url }}" alt="{{ cat.name }}">
-                        {% else %}
-                            <div class="placeholder">Немає фото</div>
-                        {% endif %}
-                    </div>
-                    <span>{{ cat.name }}</span>
+<section class="banner">
+    <div class="banner-text">
+        <h1>Весняний<br>BVLGARIпад</h1>
+        <a href="{% url 'product_detail' 1 %}" class="btn-more">Більше</a>
+    </div>
+    <div class="banner-img">
+        <img src="{% static 'img/banner.png' %}" alt="Bvlgari">
+    </div>
+</section>
+
+<section class="section-categories">
+    <div class="container">
+        <h2 class="section-title">Також вас може цікавити:</h2>
+        <div class="category-grid">
+            {% for cat in all_categories %} <a href="{% url 'category_detail' cat.pk %}" class="cat-card">
+                <div class="cat-image-wrapper">
+                    {% if cat.image %}
+                        <img src="{{ cat.image.url }}" alt="{{ cat.name }}">
+                    {% else %}
+                        <img src="{% static 'img/placeholder_cat.png' %}" alt="Немає фото">
+                    {% endif %}
                 </div>
-                {% endfor %}
-            </div>
-        </section>
+                <div class="cat-name-wrapper">
+                    <span class="cat-name">{{ cat.name|upper }}</span>
+                </div>
+            </a>
+            {% empty %}
+                <p>Додайте категорії в адмінці.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 
-        <section class="hits">
-            <h3>ХІТИ ПРОДАЖІВ</h3>
-            <div class="hits-grid">
-                {% for product in hits %}
-                <div class="hit-card">
+{% if sales %}
+<section class="section-hits sale-section">
+    <div class="container">
+        <h2 class="section-title">🔥 АКЦІЙНІ ТОВАРИ</h2>
+        <div class="hits-grid">
+            {% for sale in sales %}
+            <div class="hit-card">
+                <a href="{% url 'product_detail' sale.product.pk %}">
+                    <div class="hit-image-wrapper">
+                        {% if sale.product.image %}
+                            <img src="{{ sale.product.image.url }}" alt="{{ sale.product.name }}">
+                        {% endif %}
+                        <span class="sale-badge">-{{ sale.discount_percent }}%</span>
+                    </div>
+                    <div class="hit-content">
+                        <h4>{{ sale.product.name }}</h4>
+                        <p class="old-price">{{ sale.product.price }} грн</p>
+                        <p class="sale-price">{{ sale.sale_price }} грн</p>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="section-hits">
+    <div class="container">
+        <h2 class="section-title">ХІТИ ПРОДАЖІВ</h2>
+        <div class="hits-grid">
+            {% for product in hits %}
+            <div class="hit-card">
+                <a href="{% url 'product_detail' product.pk %}">
                     <div class="hit-image-wrapper">
                         {% if product.image %}
                             <img src="{{ product.image.url }}" alt="{{ product.name }}">
                         {% else %}
-                            <img src="{% static 'img/Jean Paul Gaultier SCANDAL LE PARFUM.jpeg' %}" alt="Default">
+                            <div class="placeholder">📦</div>
                         {% endif %}
                     </div>
-                    <!-- Додано контейнер для контенту, щоб нічого не з'їжджало -->
                     <div class="hit-content">
                         <h4>{{ product.name }}</h4>
-                        <p>{{ product.price }} грн</p>
-                        <button class="buy-button">Купити</button>
+                        <p class="price-text">{{ product.price }} грн</p>
                     </div>
+                </a>
+                <div class="card-btn-wrap">
+                    <form method="post" action="{% url 'add_to_cart' product.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="buy-button">КУПИТИ</button>
+                    </form>
                 </div>
-                {% empty %}
-                    <p>Поки немає акційних товарів.</p>
-                {% endfor %}
             </div>
-        </section>
-    </main>
+            {% empty %}
+                <p>Поки немає хітів.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 
-    <footer>
-        <p><strong>Fluffy</strong></p>
-        <p>Магазин косметики, парфумів та одягу з Європи</p>
-        <p>Контакти: @fluffy_prst | <a href="{% url 'about' %}">Про нас</a></p>
-        <p>© 2026 Fluffy. Всі права захищені.</p>
-    </footer>
-
-</body>
-</html>
+{% endblock %}

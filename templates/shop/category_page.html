@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ title }} | Fluffy{% endblock %}
+
+{% block content %}
+<section class="catalog-section">
+    <h1>{{ title }}</h1>
+    <div class="catalog-grid">
+        {% for product in items %}
+        <div class="hit-card">
+            <a href="{% url 'product_detail' product.pk %}">
+                <div class="hit-image-wrapper">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <div class="placeholder">📦</div>
+                    {% endif %}
+                </div>
+                <div class="hit-content">
+                    <h4>{{ product.name }}</h4>
+                    {% if product.brand %}
+                        <p class="brand-name">{{ product.brand.name }}</p>
+                    {% endif %}
+                    <p class="price-text">{{ product.price }} грн</p>
+                </div>
+            </a>
+            <div class="card-btn-wrap">
+                <form method="post" action="{% url 'add_to_cart' product.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="buy-button"
+                        {% if not product.in_stock %}disabled{% endif %}>
+                        {% if product.in_stock %}Купити{% else %}Немає в наявності{% endif %}
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% empty %}
+        <p class="empty-msg">Товарів у цій категорії поки немає.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

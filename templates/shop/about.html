@@ -1,11 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head><title>{{ title }}</title></head>
-<body>
-    <h1>{{ title }}</h1>
-    <p>{{ description }}</p>
+{% extends 'shop/base.html' %}
+{% load static %}
 
-    <hr>
-    <a href="/">Повернутися на головну сторінку</a>
-</body>
-</html>
+{% block title %}Про нас | Fluffy{% endblock %}
+
+{% block content %}
+<div class="about-page">
+    <h1>Про Fluffy</h1>
+    <p>Fluffy — це магазин оригінальної косметики, парфумів та одягу з Європи. Ми ретельно відбираємо кожен товар, щоб ви отримували лише найкраще.</p>
+    <p>Наша місія — зробити преміум-продукти доступними для кожного. Ми працюємо напряму з брендами та офіційними дистриб'юторами, гарантуючи 100% оригінальність.</p>
+
+    <div class="newsletter-about">
+        <h2>Підпишіться на розсилку</h2>
+        <p>Отримуйте новини про акції та нові надходження першими</p>
+        <form method="post" action="{% url 'subscribe_newsletter' %}" class="newsletter-form">
+            {% csrf_token %}
+            <input type="text" name="name" placeholder="Ваше ім'я">
+            <input type="email" name="email" placeholder="Ваш email" required>
+            <button type="submit" class="btn-subscribe">Підписатись</button>
+        </form>
+    </div>
+
+    <div class="about-back">
+        <a href="{% url 'home' %}" class="btn-primary">← На головну</a>
+    </div>
+</div>
+{% endblock %}
